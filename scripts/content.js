@@ -1,7 +1,7 @@
 function daysPassedSince(dateString) {
   const inputDate = new Date(dateString);
   if (isNaN(inputDate.getTime())) {
-    return "Invalid date format";
+    return "Invalid";
   }
 
   // Get the current date
@@ -53,8 +53,17 @@ releaseDateSpan.appendChild(releaseDateText);
 const actualDateSpan = document.createElement("span");
 actualDateSpan.classList.add("a-size-small");
 actualDateSpan.classList.add("a-color-secondary");
+
+if (time_passed === "Invalid") {
+  release_date = "Not Available";
+  time_passed = "";
+} else {
+  release_date = release_date + ",";
+  time_passed = time_passed + " ago.";
+}
+
 const actualDateText = document.createTextNode(
-  `${release_date}, ${time_passed} ago.`
+  `${release_date} ${time_passed}`
 );
 actualDateSpan.appendChild(actualDateText);
 
