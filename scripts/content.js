@@ -1,5 +1,4 @@
 function daysPassedSince(dateString) {
-  // Parse the input date string
   const inputDate = new Date(dateString);
   if (isNaN(inputDate.getTime())) {
     return "Invalid date format";
@@ -34,30 +33,34 @@ function daysPassedSince(dateString) {
   return result;
 }
 
-let release_date = document.querySelector(
-  "#productDetails_detailBullets_sections1 > tbody > tr:nth-child(4) > td"
-).innerHTML;
-
-console.log(release_date);
+let release_date = document
+  .querySelector(
+    "#productDetails_detailBullets_sections1 > tbody > tr:nth-child(4) > td"
+  )
+  .innerHTML.trimEnd();
 
 let time_passed = daysPassedSince(release_date);
-console.log(time_passed);
 
-if (
-  document.querySelector("#corePrice_desktop > div > table > tbody") == null
-) {
-  let release_div = document.querySelector(
-    "#corePriceDisplay_desktop_feature_div > div.a-section.a-spacing-small.aok-align-center > span > span.aok-relative"
-  );
-  let copy_element = document
-    .querySelector(
-      "#corePriceDisplay_desktop_feature_div > div.a-section.a-spacing-small.aok-align-center > span > span.aok-relative > span"
-    )
-    .cloneNode(true);
-} else {
-  const tr = document.createElement("tr");
-  tr.innerHTML = `<td class="a-color-secondary a-size-base a-text-right a-nowrap">Release date:</td><td class="a-span12 a-color-secondary a-size-base"> ${release_date}, ${time_passed}</td>`;
-  document
-    .querySelector("#corePrice_desktop > div > table > tbody")
-    .appendChild(tr);
-}
+// Adding the release date to the product pages
+const brElement = document.createElement("br");
+
+const releaseDateSpan = document.createElement("span");
+releaseDateSpan.classList.add("a-text-bold");
+
+const releaseDateText = document.createTextNode("Release Date: ");
+releaseDateSpan.appendChild(releaseDateText);
+
+const actualDateSpan = document.createElement("span");
+actualDateSpan.classList.add("a-size-small");
+actualDateSpan.classList.add("a-color-secondary");
+const actualDateText = document.createTextNode(
+  `${release_date}, ${time_passed} ago.`
+);
+actualDateSpan.appendChild(actualDateText);
+
+const container = document.querySelector("#averageCustomerReviews");
+container.appendChild(brElement);
+container.appendChild(releaseDateSpan);
+container.appendChild(actualDateSpan);
+
+//
