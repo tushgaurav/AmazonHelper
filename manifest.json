@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "AmazonReleasedDate",
+  "version": "1.0",
+  "description": "See when the product was released",
+  "content_scripts": [
+    {
+      "matches": ["*://*.amazon.in/*"],
+      "js": ["scripts/content.js"]
+    }
+  ]
+}
