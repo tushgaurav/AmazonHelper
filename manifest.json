@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "AmazonReleasedDate",
+  "name": "AmazonTweaks",
   "version": "1.0",
-  "description": "See when the product was released",
+  "description": "Enhance your Amazon browsing experience with launch dates, actual prices instead of EMI, and improved UI features.",
   "content_scripts": [
     {
       "matches": ["*://*.amazon.in/*"],
