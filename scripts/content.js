@@ -34,13 +34,17 @@ function daysPassedSince(dateString) {
 }
 
 // Get the release date from the product page in the "Additional Information" section
-let release_date = document
-  .querySelector(
-    "#productDetails_detailBullets_sections1 > tbody > tr:nth-child(4) > td"
-  )
-  .innerHTML.trimEnd();
+let release_date_td = document.querySelector(
+  "#productDetails_detailBullets_sections1 > tbody > tr:nth-child(4) > td"
+);
 
-let time_passed = daysPassedSince(release_date);
+let release_date = null;
+let time_passed = "Invalid";
+
+if (release_date_td) {
+  release_date = release_date_td.innerHTML.trimEnd();
+  time_passed = daysPassedSince(release_date);
+}
 
 if (time_passed === "Invalid") {
   // If no release date is available, try to find the "Date First Available" element
@@ -86,13 +90,21 @@ const actualDateText = document.createTextNode(
 actualDateSpan.appendChild(actualDateText);
 
 const container = document.querySelector("#averageCustomerReviews");
-container.appendChild(brElement);
-container.appendChild(releaseDateSpan);
-container.appendChild(actualDateSpan);
+
+if (container) {
+  container.appendChild(brElement);
+  container.appendChild(releaseDateSpan);
+  container.appendChild(actualDateSpan);
+} else {
+  console.log("No container found");
+  console.log(actualDateText);
+}
 
 // Removing the EMI Pricing
-const emiPricingDiv = document.querySelector("#inemi_feature_div > div");
-if (emiPricingDiv) {
+const emiPricing = document.querySelector("#inemi_feature_div");
+
+if (emiPricing) {
+  const emiPricingDiv = emiPricing.querySelector("div");
   // Apply display: none to the element
   emiPricingDiv.style.display = "none";
 
@@ -120,14 +132,34 @@ if (emiPricingDiv) {
       "customEMIDetails"
     );
 
-    // Create elements for EMI amount and tenure
     const emiAmountSpan = document.createElement("span");
     emiAmountSpan.textContent = `EMI Amount: ${emiAmount}`;
-    emiAmountSpan.classList.add("customEMIAmount");
+    emiAmountSpan.classList.add(
+      "a-size-medium",
+      "a-color-price",
+      "aok-align-center",
+      "customEMIAmount"
+    );
 
     const emiTenureSpan = document.createElement("span");
-    emiTenureSpan.textContent = `EMI Tenure: ${emiTenure}`;
-    emiTenureSpan.classList.add("customEMITenure");
+    emiTenureSpan.textContent = ` @ ${getFormattedTenure(emiTenure)}`;
+    emiTenureSpan.classList.add(
+      "a-size-medium",
+      "a-color-price",
+      "aok-align-center",
+      "customEMITenure"
+    );
+
+    // Function to format tenure text to display "X months"
+    function getFormattedTenure(rawTenure) {
+      const regex = /\/month \((\d+) months?\)/; // Regular expression to extract the number of months
+      const match = rawTenure.match(regex);
+      if (match) {
+        const months = match[1];
+        return `${months} months`;
+      }
+      return rawTenure; // Return original text if pattern doesn't match
+    }
 
     // Append the EMI details to the new div
     emiDetailsDiv.appendChild(emiAmountSpan);
@@ -145,6 +177,22 @@ if (emiPricingDiv) {
   }
 }
 
-// Assuming 'emiAmount' and 'emiTenure' hold the EMI amount and tenure values obtained earlier
+// Making the pricing section look better
 
-// Create a new div to hold the EMI details
+// Price make it bigger
+const price = document.querySelector(
+  "#corePriceDisplay_desktop_feature_div > div.a-section.a-spacing-none.aok-align-center > span.a-price.aok-align-center.reinventPricePriceToPayMargin.priceToPay > span:nth-child(2) > span.a-price-whole"
+);
+
+if (price) {
+  price.style.fontSize = "30px";
+}
+// Rupee symbol make it bigger
+const rupee = document.querySelector(
+  "#corePriceDisplay_desktop_feature_div > div.a-section.a-spacing-none.aok-align-center > span.a-price.aok-align-center.reinventPricePriceToPayMargin.priceToPay > span:nth-child(2) > span.a-price-symbol"
+);
+
+if (rupee) {
+  rupee.style.top = "-0.75em";
+  rupee.style.fontSize = "14px";
+}
