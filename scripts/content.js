@@ -61,10 +61,11 @@ if (time_passed === "Invalid") {
   });
 
   time_passed = daysPassedSince(release_date);
-} else {
-  release_date = release_date + ",";
-  time_passed = time_passed + " ago.";
 }
+
+release_date = release_date + ",";
+time_passed = time_passed + " ago.";
+
 // Adding the release date to the product pages
 const brElement = document.createElement("br");
 
@@ -89,4 +90,61 @@ container.appendChild(brElement);
 container.appendChild(releaseDateSpan);
 container.appendChild(actualDateSpan);
 
-//
+// Removing the EMI Pricing
+const emiPricingDiv = document.querySelector("#inemi_feature_div > div");
+if (emiPricingDiv) {
+  // Apply display: none to the element
+  emiPricingDiv.style.display = "none";
+
+  // Extract information from the first two children
+  const inemiAmountElement = emiPricingDiv.querySelector(
+    ".a-size-extra-large.inemi-amount"
+  );
+  const inemiTenureElement = emiPricingDiv.querySelector(
+    ".a-size-medium.inemi-tenure"
+  );
+
+  if (inemiAmountElement && inemiTenureElement) {
+    const emiAmount = inemiAmountElement.textContent.trim();
+    const emiTenure = inemiTenureElement.textContent.trim();
+
+    console.log("EMI Amount:", emiAmount);
+    console.log("EMI Tenure:", emiTenure);
+
+    // Further actions with the extracted information can be performed here
+    const emiDetailsDiv = document.createElement("div");
+    emiDetailsDiv.classList.add(
+      "a-section",
+      "a-spacing-small",
+      "aok-align-center",
+      "customEMIDetails"
+    );
+
+    // Create elements for EMI amount and tenure
+    const emiAmountSpan = document.createElement("span");
+    emiAmountSpan.textContent = `EMI Amount: ${emiAmount}`;
+    emiAmountSpan.classList.add("customEMIAmount");
+
+    const emiTenureSpan = document.createElement("span");
+    emiTenureSpan.textContent = `EMI Tenure: ${emiTenure}`;
+    emiTenureSpan.classList.add("customEMITenure");
+
+    // Append the EMI details to the new div
+    emiDetailsDiv.appendChild(emiAmountSpan);
+    emiDetailsDiv.appendChild(emiTenureSpan);
+
+    // Get the target div to inject EMI details into
+    const targetDiv = document.getElementById(
+      "corePriceDisplay_desktop_feature_div"
+    );
+
+    // Check if the target div exists and inject the EMI details
+    if (targetDiv) {
+      targetDiv.appendChild(emiDetailsDiv);
+    }
+  }
+}
+
+// Assuming 'emiAmount' and 'emiTenure' hold the EMI amount and tenure values obtained earlier
+
+// Create a new div to hold the EMI details
